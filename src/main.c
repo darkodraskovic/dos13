@@ -18,12 +18,14 @@ void draw() {
     /*     for (int y = 0; y <= 150; y++) */
     /*         set_pixel(x, y, x); */
     
-    for (int y = 0; y < 151; y +=2) line_h(10, y, 100, y);
-    for (int x = 0; x < 151; x += 2) line_v(x, 10, 100, x);
+    for (int y = 0; y < 151; y +=2) draw_line_h(10, y, 100, y);
+    for (int x = 0; x < 151; x += 2) draw_line_v(x, 10, 100, x);
 
-    line(10, 150, 200, 190, 1);
+    draw_line(10, 155, 190, 190, 1);
 
-    box(200, 20, 260, 40, 2);
+    draw_rect_line(200, 20, 260, 40, 2);
+
+    draw_rect(200, 150, 260, 190, 3);
 }
 
 int main(int argc, char **argv) {

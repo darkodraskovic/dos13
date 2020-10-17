@@ -16,17 +16,17 @@ unsigned char get_pixel(int x, int y) {
     return GET_PIXEL_XY(x, y);
 }
 
-void line_h (int x1, int y, int x2, unsigned char color) {
+void draw_line_h(int x1, int y, int x2, unsigned char color) {
     int offset = GET_OFFSET(x1, y);
     for (int x = x1; x <= x2; x++) SET_PIXEL_OFF(offset++, color);
 }
 
-void line_v (int x, int y1, int y2, unsigned char color) {
+void draw_line_v(int x, int y1, int y2, unsigned char color) {
     int offset = GET_OFFSET(x, y1);
     for (int y = y1; y <= y2; y++, offset += SCREEN_WIDTH) SET_PIXEL_OFF(offset, color);
 }
 
-void box (int x1, int y1, int x2, int y2, unsigned char color) {
+void draw_rect_line(int x1, int y1, int x2, int y2, unsigned char color) {
     int x, y, tmp;
 
     // horizontal lines
@@ -48,18 +48,30 @@ void box (int x1, int y1, int x2, int y2, unsigned char color) {
     }
 }
 
-void line (int x1, int y1, int x2, int y2, unsigned char color)
-{
+void draw_rect(int x1, int y1, int x2, int y2, unsigned char color) {
+    int x_incr, x, y;
+
+    int offset = GET_OFFSET(x1, y1);
+    x_incr = SCREEN_WIDTH - (x2 - x1) - 1;
+
+    for (y = y1; y <= y2; y++) {
+        for (x = x1; x <= x2; x++)
+            SET_PIXEL_OFF(offset++, color);
+        offset += x_incr;
+    }
+}
+
+void draw_line(int x1, int y1, int x2, int y2, unsigned char color) {
     int x, y, delta_x, delta_y, d, incr_same, incr_new, temp;
 
     delta_x = x2 - x1;
     delta_y = y2 - y1;
 
     if (delta_x == 0) {
-        line_v (x1, y1, y2, color);
+        draw_line_v (x1, y1, y2, color);
         return;
     } else if (delta_y == 0) {
-        line_h (x1, y1, x2, color);
+        draw_line_h (x1, y1, x2, color);
         return;
     }
 
