@@ -6,6 +6,7 @@
 #define GET_PIXEL_XY(x, y) frame_buffer[x + y * SCREEN_WIDTH]
 #define SET_PIXEL_OFF(offset, c) frame_buffer[offset] = c
 #define GET_PIXEL_OFF(offset) frame_buffer[offset]
+#define GET_OFFSET(x, y) (y << 8) + (y << 6) + x // y * 320 + x
 
 void set_pixel(int x, int y, unsigned char color) {
     SET_PIXEL_XY(x, y, color);
@@ -16,13 +17,35 @@ unsigned char get_pixel(int x, int y) {
 }
 
 void line_h (int x1, int y, int x2, unsigned char color) {
-    int offset = (y << 8) + (y << 6) + x1; // y * 320 + x1
+    int offset = GET_OFFSET(x1, y);
     for (int x = x1; x <= x2; x++) SET_PIXEL_OFF(offset++, color);
 }
 
 void line_v (int x, int y1, int y2, unsigned char color) {
-    int offset = (y1 << 8) + (y1 << 6) + x; // y * 320 + x1
+    int offset = GET_OFFSET(x, y1);
     for (int y = y1; y <= y2; y++, offset += SCREEN_WIDTH) SET_PIXEL_OFF(offset, color);
+}
+
+void box (int x1, int y1, int x2, int y2, unsigned char color) {
+    int x, y, tmp;
+
+    // horizontal lines
+    int offset_1 = GET_OFFSET(x1, y1);
+    int offset_2 = GET_OFFSET(x1, y2);
+    for (x = x1; x <= x2; x++) {
+        SET_PIXEL_OFF(offset_1++, color);
+        SET_PIXEL_OFF(offset_2++, color);
+    }
+
+    // vertical lines
+    offset_1 = GET_OFFSET(x1, y1);
+    offset_2 = GET_OFFSET(x2, y1);
+    for (y = y1; y <= y2; y++) {
+        SET_PIXEL_OFF(offset_1, color);
+        SET_PIXEL_OFF(offset_2, color);
+        offset_1 += SCREEN_WIDTH;
+        offset_2 += SCREEN_WIDTH;
+    }
 }
 
 void line (int x1, int y1, int x2, int y2, unsigned char color)
@@ -40,8 +63,8 @@ void line (int x1, int y1, int x2, int y2, unsigned char color)
         return;
     }
 
-    if (abs(delta_x) >= abs(delta_y)) {       // if x is the major axis
-        if (x2 < x1) {                // if coordinates are out of order
+    if (abs(delta_x) >= abs(delta_y)) {             // if x is the major axis
+        if (x2 < x1) {                              // if coordinates are out of order
             temp = x2;
             x2 = x1;
             x1 = temp;
@@ -52,7 +75,7 @@ void line (int x1, int y1, int x2, int y2, unsigned char color)
             y1 = temp;
             delta_y = -delta_y;
         }
-        if (y2 > y1) {              // if y2 > y1, y should be incremented
+        if (y2 > y1) {                              // if y2 > y1, y should be incremented
             incr_same = delta_y << 1;
             d = incr_same - delta_x;
             incr_new = (delta_y - delta_x) << 1;
