@@ -2,11 +2,11 @@
 #include "display.h"
 #include "draw.h"
 
-#define SET_PIXEL_XY(x, y, c) frame_buffer[x + y * SCREEN_WIDTH] = c
-#define GET_PIXEL_XY(x, y) frame_buffer[x + y * SCREEN_WIDTH]
+#define SET_PIXEL_XY(x, y, c) frame_buffer[(x) + (y) * SCREEN_WIDTH] = c
+#define GET_PIXEL_XY(x, y) frame_buffer[(x) + (y) * SCREEN_WIDTH]
 #define SET_PIXEL_OFF(offset, c) frame_buffer[offset] = c
 #define GET_PIXEL_OFF(offset) frame_buffer[offset]
-#define GET_OFFSET(x, y) (y << 8) + (y << 6) + x // y * 320 + x
+#define GET_OFFSET(x, y) ((y) << 8) + ((y) << 6) + x // y * 320 + x
 
 void set_pixel(int x, int y, unsigned char color) {
     SET_PIXEL_XY(x, y, color);
@@ -164,5 +164,68 @@ void draw_line(int x1, int y1, int x2, int y2, unsigned char color) {
                 SET_PIXEL_XY(x, y, color);
             }
         }
+    }
+}
+
+void draw_circle_line(int cx, int cy, int radius, unsigned char color) {
+    int x, y, d, delta_e, delta_se;
+
+    x = -1;
+    y = radius;
+    d = 1 - radius;
+    delta_e = -1;
+    delta_se = (-radius << 1) + 3;
+
+    while (y > x) {
+        delta_e += 2;
+        x++;
+
+        if (d < 0) {
+            d += delta_e;
+            delta_se += 2;
+        } else {
+            d += delta_se;
+            delta_se += 4;
+            y--;
+        }
+
+        SET_PIXEL_XY(cx + x, cy + y, color);
+        SET_PIXEL_XY(cx + y, cy + x, color);
+        SET_PIXEL_XY(cx + y, cy - x, color);
+        SET_PIXEL_XY(cx + x, cy - y, color);
+
+        SET_PIXEL_XY(cx - x, cy - y, color);
+        SET_PIXEL_XY(cx - y, cy - x, color);
+        SET_PIXEL_XY(cx - y, cy + x, color);
+        SET_PIXEL_XY(cx - x, cy + y, color);
+    }
+}
+
+void draw_circle(int cx, int cy, int radius, unsigned char color) {
+    int x, y, d, delta_e, delta_se;
+
+    x = -1;
+    y = radius;
+    d = 1 - radius;
+    delta_e = -1;
+    delta_se = (-radius << 1) + 3;
+
+    while (y > x) {
+        delta_e += 2;
+        x++;
+
+        if (d < 0) {
+            d += delta_e;
+            delta_se += 2;
+        } else {
+            d += delta_se;
+            delta_se += 4;
+            y--;
+        }
+
+        draw_line_h(cx - x, cy + y, cx + x, color);
+        draw_line_h(cx - y, cy - x, cx + y, color);
+        draw_line_h(cx - y, cy + x, cx + y, color);
+        draw_line_h(cx - x, cy - y, cx + x, color);
     }
 }

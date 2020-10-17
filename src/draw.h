@@ -10,5 +10,8 @@ void draw_line(int x1, int y1, int x2, int y2, unsigned char color);
 
 void draw_rect_line (int x1, int y1, int x2, int y2, unsigned char color);
 void draw_rect(int x1, int y1, int x2, int y2, unsigned char color);
+
+void draw_circle_line(int cx, int cy, int radius, unsigned char color);
+void draw_circle(int cx, int cy, int radius, unsigned char color);
     
 #endif /* DRAW_H */

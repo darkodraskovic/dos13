@@ -26,6 +26,9 @@ void draw() {
     draw_rect_line(200, 20, 260, 40, 2);
 
     draw_rect(200, 150, 260, 190, 3);
+
+    draw_circle_line(200, 30, 30, 3);
+    draw_circle(200, 100, 30, 3);
 }
 
 int main(int argc, char **argv) {
