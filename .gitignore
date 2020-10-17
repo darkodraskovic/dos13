@@ -1,0 +1,5 @@
+.projectile
+.clangd
+build
+compile_commands.json
+bin
