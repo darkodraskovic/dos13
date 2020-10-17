@@ -9,7 +9,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../bin")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(main
-  src/main.c
   src/app.c
-  src/display.c)
+  src/display.c
+  src/draw.c
+  src/main.c
+  )
 target_include_directories(main PUBLIC ${DJGPP_INCLUDE})

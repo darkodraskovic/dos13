@@ -13,9 +13,6 @@ void flip_buffer();
 
 void init_display();
 
-void set_pixel(int x, int y, int color);
-int get_pixel(int x, int y);
-
 extern char frame_buffer[SCREEN_SIZE];
 extern char clear_color;
 

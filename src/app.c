@@ -11,6 +11,7 @@ float previous_frame = 0;
 
 void app_run() {
     init_display();
+    init();
     
     while(true) {
         float wait_time = sec_per_update - ((double)uclock() / UCLOCKS_PER_SEC - previous_frame);
@@ -18,6 +19,8 @@ void app_run() {
             delay(wait_time * 1000);
         }
         previous_frame = (double)uclock() / UCLOCKS_PER_SEC;
+
+        update();
         
         clear_buffer();
         draw();

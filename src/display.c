@@ -51,11 +51,3 @@ void init_display() {
     __djgpp_nearptr_enable();
     set_mode_13h();
 }
-
-void set_pixel(int x, int y, int c) {
-    frame_buffer[x + y * SCREEN_WIDTH] = c;
-}
-
-int get_pixel(int x, int y) {
-    return frame_buffer[x + y * SCREEN_WIDTH];
-}
