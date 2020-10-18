@@ -44,3 +44,11 @@ ln -s build/compile_commands.json .
 ```
 dosbox -c "mount x $PWD" -c "x:" -c "main.exe"
 ```
+
+## make && run
+
+From `build` directory
+
+```
+make && cd ../bin && dosbox -c "mount x $PWD" -c "x:" -c "main.exe"
+```

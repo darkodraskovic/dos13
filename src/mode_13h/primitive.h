@@ -1,5 +1,5 @@
-#ifndef DRAW_H
-#define DRAW_H
+#ifndef PRIMITIVE_H
+#define PRIMITIVE_H
 
 void set_pixel(int x, int y, unsigned char color);
 unsigned char get_pixel(int x, int y);
@@ -14,4 +14,4 @@ void draw_rect(int x1, int y1, int x2, int y2, unsigned char color);
 void draw_circle_line(int cx, int cy, int radius, unsigned char color);
 void draw_circle(int cx, int cy, int radius, unsigned char color);
     
-#endif /* DRAW_H */
+#endif /* PRIMITIVE_H */

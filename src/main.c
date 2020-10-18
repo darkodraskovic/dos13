@@ -1,19 +1,31 @@
-#include <dpmi.h>
 #include <stdio.h>
-#include "app.h"
-#include "display.h"
-#include "draw.h"
-#include "pc.h"
+#include <dpmi.h>
 
-void init() {
-    clear_color = 23;
-}
+#include <pc.h>
 
-void update() {
-    asm ("nop");
-}
+#include "mode_13h/app.h"
+#include "mode_13h/display.h"
+#include "mode_13h/primitive.h"
+#include "mode_13h/sprite.h"
 
-void draw() {
+unsigned char ball_sprite[] = {5, 0, 5, 0,        /* width 5, height 5 */
+      0,  11,  11,  11,   0,
+     11,  14,   3,   3,   9,
+     11,   3,   3,   3,   9,
+     11,   3,   3,   3,   9,
+      0,   9,   9,   9,   0
+};
+
+unsigned char car_sprite[] = {21, 0, 6, 0,
+    0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 4, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 4, 0, 0,
+    0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0
+};
+    
+void draw_primitives() {
     /* for (int x = 0; x <= 150; x++) */
     /*     for (int y = 0; y <= 150; y++) */
     /*         set_pixel(x, y, x); */
@@ -29,6 +41,35 @@ void draw() {
 
     draw_circle_line(200, 30, 30, 3);
     draw_circle(200, 100, 30, 3);
+}
+
+unsigned char sprite_buffer[29];
+
+void draw_sprites() {
+    /* draw_sprite(10, 10, ball_sprite); */
+    draw_sprite(10, 10, sprite_buffer);
+    
+    static int x = 0;
+    draw_sprite(x++, 40, car_sprite);
+}
+
+// ================================================================
+
+void init() {
+    clear_color = 23;
+    clear_buffer();
+    int x = 30; int y = 45;
+    draw_sprite(x, y, ball_sprite);
+    read_sprite(x, y, x + 4, y + 4, sprite_buffer, clear_color, 1);
+}
+
+void update() {
+    /* asm ("nop"); */
+}
+
+void draw() {
+    /* draw_primitives(); */
+    draw_sprites();
 }
 
 int main(int argc, char **argv) {
