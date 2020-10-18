@@ -6,6 +6,9 @@
 
 #include "display.h"
 
+#define INPUT_STATUS 0x3DA
+#define VRETRACE_BIT 0x08
+
 char frame_buffer[SCREEN_SIZE];
 char clear_color = 1;
 
@@ -31,9 +34,20 @@ void clear_buffer() {
     memset(frame_buffer, clear_color, SCREEN_SIZE);
 }
 
+void wait_v_retrace() {
+}
+
+
+void wait_for_retrace() {
+  while(inportb( INPUT_STATUS ) & VRETRACE_BIT);
+  while(!(inportb( INPUT_STATUS ) & VRETRACE_BIT));
+}
+
 void flip_buffer() {
     char *screen = (char *)VIDEO_SEGMENT + __djgpp_conventional_base;
 
+    wait_for_retrace();
+    
     // alternative 1
     memcpy(screen, frame_buffer, SCREEN_SIZE);
 
@@ -45,7 +59,6 @@ void flip_buffer() {
     /*     screen[i] = backBuffer[i]; */
     /* } */
 }
-
 
 void init_display() {
     __djgpp_nearptr_enable();

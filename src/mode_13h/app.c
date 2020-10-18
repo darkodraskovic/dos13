@@ -6,7 +6,7 @@
 
 void draw();
 
-const float sec_per_update = 1.f / 30.f;
+const float sec_per_update = 1.f / 60.f;
 float previous_frame = 0;
 
 void app_run() {

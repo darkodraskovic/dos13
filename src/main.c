@@ -50,14 +50,15 @@ void draw_sprites() {
     draw_sprite(10, 10, sprite_buffer);
     
     static int x = 0;
-    draw_sprite(x++, 40, car_sprite);
+    x += 1;
+    draw_sprite(x, 40, car_sprite);
 }
 
 // ================================================================
 
 void init() {
     clear_color = 23;
-    /* clear_buffer(); */
+    clear_buffer();
     int x = 30; int y = 45;
     draw_sprite(x, y, ball_sprite);
     read_sprite(x, y, x + 4, y + 4, sprite_buffer, clear_color, 1);
