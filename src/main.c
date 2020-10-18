@@ -57,7 +57,7 @@ void draw_sprites() {
 
 void init() {
     clear_color = 23;
-    clear_buffer();
+    /* clear_buffer(); */
     int x = 30; int y = 45;
     draw_sprite(x, y, ball_sprite);
     read_sprite(x, y, x + 4, y + 4, sprite_buffer, clear_color, 1);
