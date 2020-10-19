@@ -17,9 +17,10 @@ add_library(mode_13h
   )
 target_include_directories(mode_13h PUBLIC ${DJGPP_INCLUDE})
 
-add_executable(main
+add_executable(main.exe
   src/main.c
+  src/asm/nasm_test.o
   )
-target_include_directories(main PUBLIC src)
-target_link_libraries(main PRIVATE mode_13h)
+target_include_directories(main.exe PUBLIC src)
+target_link_libraries(main.exe PRIVATE mode_13h)
 

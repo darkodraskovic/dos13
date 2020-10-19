@@ -20,7 +20,7 @@ We'll need a A DOS extender
 
 > a computer software program running under DOS that enables software to run in a protected mode environment even though the host operating system is only capable of operating in real mode." ([Wikipedia](https://en.wikipedia.org/wiki/DOS_extender))
 
-We'll use [CWSDPMI](http://sandmann.dotster.com/cwsdpmi/). Download a binary distribution. `mkdir` `bin` directory in the source directory and copy the downloaded binary into it.
+We'll use [CWSDPMI](http://sandmann.dotster.com/cwsdpmi/). Download a binary distribution. `mkdir` `bin` directory in the source directory and copy the downloaded binary (`CWSDPMI.EXE`) into it.
 
 ## Compile
 
@@ -52,3 +52,13 @@ From `build` directory
 ```
 make && cd ../bin && dosbox -c "mount x $PWD" -c "x:" -c "main.exe"
 ```
+
+## NASM
+
+Assemble .asm file with
+
+```
+nasm -f coff <filename>.asm
+```
+
+

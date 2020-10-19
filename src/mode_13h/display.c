@@ -34,19 +34,24 @@ void clear_buffer() {
     memset(frame_buffer, clear_color, SCREEN_SIZE);
 }
 
-void wait_v_retrace() {
-}
+void wait_vretrace() {
+    // TODO: Exit to error: Unhandled INT 17 call 86
+    /* while(inportb(INPUT_STATUS) & VRETRACE_BIT); */
+    /* while(!(inportb(INPUT_STATUS) & VRETRACE_BIT)); */
 
-
-void wait_for_retrace() {
-  while(inportb( INPUT_STATUS ) & VRETRACE_BIT);
-  while(!(inportb( INPUT_STATUS ) & VRETRACE_BIT));
+    int x = inportb(INPUT_STATUS) & VRETRACE_BIT;
+    while (x) {
+        x = inportb(INPUT_STATUS) & VRETRACE_BIT;
+    }
+    while (!x) {
+        x = inportb(INPUT_STATUS) & VRETRACE_BIT;
+    }
 }
 
 void flip_buffer() {
     char *screen = (char *)VIDEO_SEGMENT + __djgpp_conventional_base;
 
-    wait_for_retrace();
+    wait_vretrace();
     
     // alternative 1
     memcpy(screen, frame_buffer, SCREEN_SIZE);
