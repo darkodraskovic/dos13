@@ -6,11 +6,13 @@
 
 #include "display.h"
 
-#define INPUT_STATUS 0x3DA
-#define VRETRACE_BIT 0x08
+#define INPUT_STATUS 0x03da
+#define VRETRACE 0x08
+#define PALETTE_INDEX 0x03c8
+#define PALETTE_DATA 0x03c9
 
 char frame_buffer[SCREEN_SIZE];
-char clear_color = 1;
+char clear_color = 0;
 
 void set_mode_13h()
 {
@@ -34,18 +36,19 @@ void clear_buffer() {
     memset(frame_buffer, clear_color, SCREEN_SIZE);
 }
 
-void wait_vretrace() {
-    // TODO: Exit to error: Unhandled INT 17 call 86
-    /* while(inportb(INPUT_STATUS) & VRETRACE_BIT); */
-    /* while(!(inportb(INPUT_STATUS) & VRETRACE_BIT)); */
+void set_palette(byte *palette) {
+    outp(PALETTE_INDEX,0);
+    for(int i=0; i < PALETTE_SIZE; i++) outp(PALETTE_DATA, palette[i]);
+}
 
-    int x = inportb(INPUT_STATUS) & VRETRACE_BIT;
-    while (x) {
-        x = inportb(INPUT_STATUS) & VRETRACE_BIT;
-    }
-    while (!x) {
-        x = inportb(INPUT_STATUS) & VRETRACE_BIT;
-    }
+void wait_vretrace() {
+    // The VGA refreshes the screen 70 times a second, or 70hz.
+    // function is called twice -> the loop cycles at 35 times a second
+    
+    /* wait until done with vertical retrace */
+    while  ((inp(INPUT_STATUS) & VRETRACE));
+    /* wait until done refreshing */
+    while (!(inp(INPUT_STATUS) & VRETRACE));
 }
 
 void flip_buffer() {
@@ -53,16 +56,7 @@ void flip_buffer() {
 
     wait_vretrace();
     
-    // alternative 1
     memcpy(screen, frame_buffer, SCREEN_SIZE);
-
-    // alternative 2
-    /* dosmemput(backBuffer, maxScreenOffset, 0xa0000); */
-
-    // alternative 3
-    /* for(int i = 0; i < maxScreenOffset; i++) { */
-    /*     screen[i] = backBuffer[i]; */
-    /* } */
 }
 
 void init_display() {

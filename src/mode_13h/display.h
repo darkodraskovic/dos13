@@ -11,12 +11,18 @@
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 200
 #define SCREEN_SIZE 64000
+#define NUM_COLORS 256
+#define PALETTE_SIZE NUM_COLORS * 3
+
+typedef unsigned char byte;
+typedef unsigned short word;
+typedef unsigned long dword;
 
 void set_mode_13h();
 void set_text_mode();
 void clear_buffer();
 void flip_buffer();
-
+void set_palette(byte *palette);
 void init_display();
 
 extern char frame_buffer[SCREEN_SIZE];
