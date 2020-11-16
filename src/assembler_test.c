@@ -1,5 +1,7 @@
 // assemled with NASM
 extern "C" unsigned int AddFour(unsigned int x);
+extern "C" unsigned int hello();
+extern "C" unsigned  hello2();
 
 unsigned short int add_four(unsigned short int x) {
     unsigned int y; 

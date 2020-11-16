@@ -5,6 +5,7 @@
 #include <dpmi.h>
 #include <pc.h>
 #include <dos.h>
+#include <conio.h>
 
 #include "mode_13h/app.h"
 #include "mode_13h/bitmap.h"
@@ -45,7 +46,7 @@ void draw() {
 }
 
 int main(int argc, char **argv) {
-    app_run();
+    /* app_run(); */
 
     /* printf("%d\n", add_four(12)); */
     /* printf("AddFour(4) = %i\n", AddFour(8)); */
@@ -54,5 +55,8 @@ int main(int argc, char **argv) {
     
     /* print_char('R'); */
 
+    /* hello(); */
+
+    hello2();
     return 0;
 }

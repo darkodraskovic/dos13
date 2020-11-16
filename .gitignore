@@ -2,5 +2,7 @@
 .clangd
 build
 compile_commands.json
-bin
+bin/main.exe
+bin/CWSDPMI.EXE
 *.o
+.cache

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project (boilerplate)
+project (boilerplate C)
 
 set(DJGPP_DIR "/home/darko/Programs/djgpp/")
 set(CMAKE_C_COMPILER "${DJGPP_DIR}/bin/i586-pc-msdosdjgpp-g++")
@@ -17,9 +17,10 @@ add_library(mode_13h
   )
 target_include_directories(mode_13h PUBLIC ${DJGPP_INCLUDE})
 
+file(GLOB_RECURSE ASM_FILES "src/asm/*.o")
 add_executable(main.exe
+  ${ASM_FILES}
   src/main.c
-  src/asm/nasm_test.o
   )
 target_include_directories(main.exe PUBLIC src)
 target_link_libraries(main.exe PRIVATE mode_13h)
